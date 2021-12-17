@@ -4,7 +4,7 @@ const config = require('../config/config');
 const swaggerDef = {
   openapi: '3.0.0',
   info: {
-    title: 'node-express-boilerplate API documentation',
+    title: 'API Coffee House (Phạm Jin D13CNPM6)',
     version,
     license: {
       name: 'MIT',

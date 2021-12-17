@@ -5,9 +5,9 @@ services:
     build: .
     image: node-app
     environment:
-      - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
+      - MONGODB_URL=mongodb+srv://Xaopaibun:vanquy@cluster0.bxvyn.mongodb.net/CoffeeHouse
     ports:
-      - '3000:3000'
+      - '8000:8000'
     depends_on:
       - mongodb
     volumes:

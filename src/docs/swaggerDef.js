@@ -6,14 +6,10 @@ const swaggerDef = {
   info: {
     title: 'API Coffee House (Phạm Jin D13CNPM6)',
     version,
-    license: {
-      name: 'MIT',
-      url: 'https://github.com/hagopj13/node-express-boilerplate/blob/master/LICENSE',
-    },
   },
   servers: [
     {
-      url: `http://localhost:${config.port}/v1`,
+      url: `http://${config.server}:${config.port}/v1`,
     },
   ],
 };

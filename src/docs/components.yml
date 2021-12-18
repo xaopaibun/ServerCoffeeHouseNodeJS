@@ -18,6 +18,25 @@ components:
         email: fake@example.com
         name: fake name
         role: user
+    
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        image:
+          type: string
+        content:
+          type: string
+      example:
+        id: 5ebac534954b54139806d112
+        name: fake@example.com
+        price: 25000
+        content: here are many variations of passages of Lorem Ipsum available, but the majority
 
     Token:
       type: object

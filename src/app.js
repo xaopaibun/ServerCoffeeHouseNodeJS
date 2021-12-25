@@ -1,5 +1,6 @@
 const express = require('express');
 const helmet = require('helmet');
+const path = require('path');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
@@ -20,6 +21,8 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+
+app.use(express.static('public'));
 
 // set security HTTP headers
 app.use(helmet());

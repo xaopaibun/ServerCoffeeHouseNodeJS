@@ -1,33 +1,22 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const productSchema = mongoose.Schema(
+const CustomerFeedbackSchema = mongoose.Schema(
   {
-    category_id: {
+    product_id: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'Category',
+      ref: 'Product',
       required: true,
     },
-    name: {
+    full_name: {
       type: String,
       required: true,
       trim: true,
     },
-    image: {
+    email: {
       type: String,
       required: true,
       trim: true,
-    },
-    slug: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-      trim: true,
-      min: 35000,
     },
     star: {
       min: 0,
@@ -36,14 +25,7 @@ const productSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    stock: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 45,
-      trim: true,
-    },
-    information: {
+    title: {
       type: String,
       required: true,
       trim: true,
@@ -53,10 +35,6 @@ const productSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    shipping: {
-      type: Boolean,
-      default: true,
-    },
   },
   {
     timestamps: true,
@@ -64,9 +42,9 @@ const productSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-productSchema.plugin(toJSON);
-productSchema.plugin(paginate);
+CustomerFeedbackSchema.plugin(toJSON);
+CustomerFeedbackSchema.plugin(paginate);
 
-const Product = mongoose.model('Product', productSchema);
+const CustomerFeedback = mongoose.model('CustomerFeedback', CustomerFeedbackSchema);
 
-module.exports = Product;
+module.exports = CustomerFeedback;

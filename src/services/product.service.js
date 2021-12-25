@@ -1,12 +1,11 @@
 const httpStatus = require('http-status');
 const { Product } = require('../models');
 const ApiError = require('../utils/ApiError');
+const UploadImages = require('../utils/uploadImage');
 
 const createProduct = async (ProductBody) => {
-  if (await Product.isEmailTaken(ProductBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }
-  return Product.create(ProductBody);
+  const image = UploadImages(ProductBody.image);
+  return Product.create({ ...ProductBody, image });
 };
 
 const queryProduct = async (filter, options) => {

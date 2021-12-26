@@ -29,6 +29,7 @@ const getSimilarProducts = catchAsync(async (req, res) => {
   const result = await productService.queryProduct(filter, 3);
   res.send(result);
 });
+
 const updateProduct = catchAsync(async (req, res) => {
   const data = await productService.updateProductById(req.params.productId, req.body);
   res.send({ message: 'update successful products', data });

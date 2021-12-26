@@ -37,6 +37,10 @@ module.exports = {
   env: envVars.NODE_ENV,
   server: envVars.SERVER,
   port: envVars.PORT,
+  facebookClientId: envVars.FACEBOOK_CLIENT_ID,
+  facebookClientSecret: envVars.FACEBOOK_CLIENT_SECRET,
+  googleClientId: envVars.GOOGLE_CLIENT_ID,
+  googleClientSecret: envVars.GOOGLE_CLIENT_SECRET,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {

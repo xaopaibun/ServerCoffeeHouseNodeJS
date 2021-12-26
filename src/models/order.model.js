@@ -42,6 +42,14 @@ const orderSchema = mongoose.Schema(
       enum: ['Pending', 'Confirmed', 'Cancel', 'Done'],
       default: 'Pending',
     },
+    payment: {
+      type: String,
+      enum: ['Unpaid', 'paid'],
+    },
+    shipping_information: {
+      type: String,
+      enum: ['not delivered', 'delivery', 'delivered'],
+    },
     list_product: {
       type: [productSchema],
       required: true,
@@ -59,28 +67,28 @@ orderSchema.plugin(paginate);
 
 const Order = mongoose.model('Order', orderSchema);
 
-// eslint-disable-next-line no-console
-console.log(
-  new Order({
-    full_name: 'Phạm Văn Quý',
-    address: 'Hà Nội',
-    email: 'vanquy33338888@gmail.com',
-    phone_number: '0352343938',
-    list_product: [
-      {
-        name: 'abc',
-        quatity: 2,
-        price: 5000,
-        into_money: 10000,
-      },
-      {
-        name: 'abc',
-        quatity: 3,
-        price: 5000,
-        into_money: 15000,
-      },
-    ],
-  })
-); // []
+// // eslint-disable-next-line no-console
+// console.log(
+//   new Order({
+//     full_name: 'Phạm Văn Quý',
+//     address: 'Hà Nội',
+//     email: 'vanquy33338888@gmail.com',
+//     phone_number: '0352343938',
+//     list_product: [
+//       {
+//         name: 'abc',
+//         quatity: 2,
+//         price: 5000,
+//         into_money: 10000,
+//       },
+//       {
+//         name: 'abc',
+//         quatity: 3,
+//         price: 5000,
+//         into_money: 15000,
+//       },
+//     ],
+//   })
+// ); // []
 
 module.exports = Order;

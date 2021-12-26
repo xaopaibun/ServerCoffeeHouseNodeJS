@@ -15,7 +15,13 @@ const getBookingTable = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const deleteBookingTable = catchAsync(async (req, res) => {
+  const data = await bookingtableService.deleteBookingTableById(req.params.bookingTableId);
+  res.status(httpStatus.NO_CONTENT).send({ message: 'delete successful booking table', data });
+});
+
 module.exports = {
   bookingtable,
   getBookingTable,
+  deleteBookingTable,
 };

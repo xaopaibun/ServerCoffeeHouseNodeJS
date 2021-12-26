@@ -1,0 +1,7 @@
+###
+POST http://localhost:8000/v1/auth/facebook
+Content-Type: application/json
+
+{
+    "access_token" : "EAADh4aQZAwRcBAB2sg63tlulJVdJt4KdoEpeANY8yGb8GX4PFf4psf3wZBkaASWBEG3uYo9hNyKKRkdL43HlZB8AUPLE4qpLTQrQiwxdeJKnYJTQL7g9MSnKSP6KRQ5bBWFVnCANkML0niQNXNEhTOWht37TeDZChO1HEMb6B5z6TZCOHMWsqel8gvqdev5wEXEHfi4MMBY5aBrcSCfw8eak3au2zAAVfcsaNMqkuVoq7Il1YFWAg"
+}

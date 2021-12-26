@@ -27,7 +27,7 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
       trim: true,
-      min: 35000,
+      min: 0,
     },
     star: {
       min: 0,

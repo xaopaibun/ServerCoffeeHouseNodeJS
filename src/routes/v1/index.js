@@ -5,6 +5,8 @@ const productRoute = require('./product.route');
 const categoryRoute = require('./category.route');
 const bookingtableRoute = require('./bookingtable.route');
 const customerfeedbackRoute = require('./customerfeedback.route');
+const orderRoute = require('./order.route');
+const paymentRoute = require('./payment.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -35,6 +37,14 @@ const defaultRoutes = [
   {
     path: '/customer-feedback',
     route: customerfeedbackRoute,
+  },
+  {
+    path: '/payment',
+    route: paymentRoute,
+  },
+  {
+    path: '/order',
+    route: orderRoute,
   },
 ];
 

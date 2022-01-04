@@ -2,14 +2,18 @@ const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
 const productSchema = mongoose.Schema({
+  id: mongoose.SchemaTypes.ObjectId,
   name: String,
   image: String,
   price: Number,
   quatity: Number,
-  into_money: { type: Number },
 });
 const orderSchema = mongoose.Schema(
   {
+    user_id: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'User',
+    },
     full_name: {
       type: String,
       required: true,
@@ -67,28 +71,6 @@ orderSchema.plugin(paginate);
 
 const Order = mongoose.model('Order', orderSchema);
 
-// // eslint-disable-next-line no-console
-// console.log(
-//   new Order({
-//     full_name: 'Phạm Văn Quý',
-//     address: 'Hà Nội',
-//     email: 'vanquy33338888@gmail.com',
-//     phone_number: '0352343938',
-//     list_product: [
-//       {
-//         name: 'abc',
-//         quatity: 2,
-//         price: 5000,
-//         into_money: 10000,
-//       },
-//       {
-//         name: 'abc',
-//         quatity: 3,
-//         price: 5000,
-//         into_money: 15000,
-//       },
-//     ],
-//   })
-// ); // []
+// console.log(Order.where({ status: 'done' }));
 
 module.exports = Order;

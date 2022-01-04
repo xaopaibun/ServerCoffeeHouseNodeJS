@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 const { Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const UploadImages = require('../utils/uploadImage');
@@ -11,6 +12,11 @@ const createProduct = async (ProductBody) => {
 const queryProduct = async (filter, options) => {
   const product = await Product.paginate(filter, options);
   return product;
+};
+
+const getProductByCategoryId = async (CategoryId) => {
+  const data = await Product.aggregate([{ $match: { category_id: mongoose.Types.ObjectId(CategoryId) } }]);
+  return data;
 };
 
 const getProductById = async (id) => {
@@ -42,4 +48,5 @@ module.exports = {
   getProductById,
   updateProductById,
   deleteProductById,
+  getProductByCategoryId,
 };

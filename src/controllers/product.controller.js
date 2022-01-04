@@ -6,7 +6,7 @@ const { productService } = require('../services');
 
 const createProduct = catchAsync(async (req, res) => {
   const data = await productService.createProduct({ ...req.body, image: req.file });
-  res.status(httpStatus.CREATED).send({ message: 'add successful products', data });
+  res.status(httpStatus.CREATED).send({ message: 'add successfull products', data });
 });
 
 const getProducts = catchAsync(async (req, res) => {

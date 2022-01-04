@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const slug = require('mongoose-slug-generator');
+
 const { toJSON, paginate } = require('./plugins');
 
 const productSchema = mongoose.Schema(
@@ -20,8 +22,9 @@ const productSchema = mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
+      slug: ['name'],
       trim: true,
+      unique: true,
     },
     price: {
       type: Number,
@@ -66,6 +69,7 @@ const productSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 productSchema.plugin(toJSON);
 productSchema.plugin(paginate);
+productSchema.plugin(slug);
 
 const Product = mongoose.model('Product', productSchema);
 

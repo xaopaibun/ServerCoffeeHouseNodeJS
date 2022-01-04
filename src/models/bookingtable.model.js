@@ -42,4 +42,13 @@ bookingtableSchema.plugin(paginate);
 
 const BookingTable = mongoose.model('BookingTable', bookingtableSchema);
 
+(async (status, start, end) => {
+  const data = await BookingTable.find({
+    status_booking: status,
+    createdAt: { $gte: start, $lt: end },
+  });
+  return data;
+  // eslint-disable-next-line no-console
+})('Pending', '2021-12-25', '2021-12-26');
+
 module.exports = BookingTable;

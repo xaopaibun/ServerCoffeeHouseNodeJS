@@ -1,6 +1,5 @@
 const express = require('express');
 const helmet = require('helmet');
-const path = require('path');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');

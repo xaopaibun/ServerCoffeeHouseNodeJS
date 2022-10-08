@@ -2,11 +2,11 @@ const httpStatus = require('http-status');
 const mongoose = require('mongoose');
 const { Product } = require('../models');
 const ApiError = require('../utils/ApiError');
-const UploadImages = require('../utils/uploadImage');
+// const UploadImages = require('../utils/uploadImage');
 
 const createProduct = async (ProductBody) => {
-  const image = UploadImages(ProductBody.image);
-  return Product.create({ ...ProductBody, image });
+  // const image = UploadImages(ProductBody.image);
+  return Product.create({ ...ProductBody });
 };
 
 const queryProduct = async (filter, options) => {

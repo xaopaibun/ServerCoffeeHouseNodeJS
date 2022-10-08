@@ -67,4 +67,7 @@ module.exports = {
     },
     from: envVars.EMAIL_FROM,
   },
+  cloud_name: envVars.CLOUD_NAME,
+  api_key: envVars.API_KEY,
+  api_secret: envVars.API_SECRET,
 };

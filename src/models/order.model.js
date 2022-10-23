@@ -6,7 +6,7 @@ const productSchema = mongoose.Schema({
   name: String,
   image: String,
   price: Number,
-  quatity: Number,
+  quantity: Number,
 });
 const orderSchema = mongoose.Schema(
   {
@@ -33,7 +33,7 @@ const orderSchema = mongoose.Schema(
       type: Number,
     },
     address: {
-      type: String,
+      type: Object,
       required: true,
       trim: true,
     },
@@ -42,22 +42,28 @@ const orderSchema = mongoose.Schema(
       trim: true,
     },
     status: {
-      type: String,
-      enum: ['Pending', 'Confirmed', 'Cancel', 'Done'],
-      default: 'Pending',
+      type: Number,
+      enum: [1, 2, 3, 4], // ['Pending', 'Confirmed', 'Cancel', 'Done'],
+      default: 1,
     },
     payment: {
-      type: String,
-      enum: ['Unpaid', 'paid'],
+      type: Number,
+      enum: [1, 2], //      enum: ['Unpaid', 'paid'],
+      default: 1,
     },
     shipping_information: {
-      type: String,
-      enum: ['not delivered', 'delivery', 'delivered'],
+      type: Number,
+      enum: [1, 2, 3], // enum: ['not delivered', 'delivery', 'delivered'],
+      default: 1,
     },
     list_product: {
       type: [productSchema],
       required: true,
       trim: true,
+    },
+    date: {
+      type: Date,
+      default: Date.now(),
     },
   },
   {

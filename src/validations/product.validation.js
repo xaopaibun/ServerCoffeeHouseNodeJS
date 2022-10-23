@@ -6,7 +6,6 @@ const createProduct = {
     category_id: Joi.string()
       .regex(/^[0-9a-fA-F]{24}$/)
       .required(),
-    image: Joi.object().required(),
     slug: Joi.string()
       // eslint-disable-next-line security/detect-unsafe-regex
       .regex(/^[a-z](-?[a-z])*$/)

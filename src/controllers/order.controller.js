@@ -15,7 +15,18 @@ const getOrderProduct = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getStatistic = catchAsync(async (req, res) => {
+  const result = {
+    confirm: 10,
+    delivery: 12,
+    success: 15,
+    cancel: 12,
+  };
+  res.send(result);
+});
+
 module.exports = {
   createOrderProduct,
   getOrderProduct,
+  getStatistic,
 };

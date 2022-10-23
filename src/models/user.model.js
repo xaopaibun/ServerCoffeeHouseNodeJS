@@ -44,6 +44,23 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    avatar: {
+      type: String,
+      default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png',
+    },
+    phone: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    age: {
+      type: Number,
+    },
+    sex: {
+      type: Number,
+      enum: [1, 0],
+    },
     facebook: {
       uid: String,
       token: String,

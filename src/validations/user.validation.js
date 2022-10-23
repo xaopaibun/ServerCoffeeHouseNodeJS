@@ -35,6 +35,11 @@ const updateUser = {
       email: Joi.string().email(),
       password: Joi.string().custom(password),
       name: Joi.string(),
+      avatar: Joi.string(),
+      phone: Joi.string(),
+      address: Joi.string(),
+      age: Joi.number(),
+      sex: Joi.number(),
     })
     .min(1),
 };

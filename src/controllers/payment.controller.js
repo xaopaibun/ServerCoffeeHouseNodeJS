@@ -1,5 +1,7 @@
 const httpStatus = require('http-status');
 const paypal = require('paypal-rest-sdk');
+const { Order } = require('../models');
+const { userService } = require('../services');
 const catchAsync = require('../utils/catchAsync');
 
 paypal.configure({
@@ -49,26 +51,63 @@ const pay = catchAsync(async (req, res) => {
   });
 });
 
-const success = catchAsync(async (req, res) => {
-  const { paymentId, payerId, total } = req.query;
-  const executePaymentJson = {
-    payer_id: payerId,
-    transactions: [
-      {
-        amount: {
-          currency: 'USD',
-          total: total.toString(),
-        },
-      },
-    ],
-  };
-  paypal.payment.execute(paymentId, executePaymentJson, function (error, payment) {
+const success = catchAsync(async (req, res, next) => {
+  const { paymentId } = req.query;
+  const payerId = { payer_id: req.query.PayerID };
+  paypal.payment.execute(paymentId, payerId, async function (error, payment) {
     if (error) {
-      res.status(400).send(error);
+      // eslint-disable-next-line no-console
+      console.error(JSON.stringify(error));
+      return next(error);
+    }
+    if (payment.state === 'approved') {
+      const user = await userService.getUserByEmail(payment.payer.payer_info.email);
+      if (user) {
+        const orderDetail = {
+          _idOrder: payment.id,
+          user_id: user._id,
+          email: user.email,
+          full_name: user.name,
+          phone_number: user.phone || '',
+          total_money: payment.transactions[0].amount.total,
+          address: user.address,
+          status: 1,
+          payment: 2,
+          shipping_information: 1,
+          list_product: payment.transactions[0].item_list.items,
+        };
+        Order.create({ ...orderDetail });
+        res.json({ payment });
+      } else {
+        const orderDetail = {
+          _idOrder: payment.id,
+          email: payment.payer.payer_info.email,
+          full_name: payment.payer.payer_info.shipping_address.recipient_name,
+          phone_number: '',
+          total_money: payment.transactions[0].amount.total,
+          address: `${payment.payer.payer_info.shipping_address.line1} ${payment.payer.payer_info.shipping_address.city}`,
+          status: 1,
+          payment: 2,
+          shipping_information: 1,
+          list_product: payment.transactions[0].item_list.items,
+        };
+        Order.create({ ...orderDetail });
+        res.json({ payment });
+      }
     } else {
-      res.send(payment);
+      res.json({ payment: 'not success' });
     }
   });
 });
 
-module.exports = { cancle, pay, success };
+const execute = catchAsync(async (req, res) => {
+  paypal.billingAgreement.execute(req.body.paymentID, {}, (err, bg) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(bg);
+    }
+  });
+});
+
+module.exports = { cancle, pay, success, execute };

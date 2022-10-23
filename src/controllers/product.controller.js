@@ -24,6 +24,15 @@ const getProduct = catchAsync(async (req, res) => {
   res.send(product);
 });
 
+const getProductByCategoryID = catchAsync(async (req, res) => {
+  const result = await productService.getProductByCategoryId(req.params.category_id);
+
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'category_id not found');
+  }
+  res.status(httpStatus.ACCEPTED).send(result);
+});
+
 const getSimilarProducts = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['category_id']);
   const result = await productService.queryProduct(filter, 3);
@@ -47,4 +56,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getSimilarProducts,
+  getProductByCategoryID,
 };

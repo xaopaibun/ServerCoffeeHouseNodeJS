@@ -14,5 +14,5 @@ router.get('/:productId', productController.getProduct);
 router.post('/create-product', fileUploader.single('image'), auth('getUsers'), productController.createProduct);
 router.delete('/delete-product/:productId', auth('getUsers'), productController.deleteProduct);
 router.put('/:productId', auth('getUsers'), productController.updateProduct);
-router.get('/list-products?category_id=:category_id', productController.getProductByCategoryID);
+router.get('/category_id/:category_id', productController.getProductByCategoryID);
 module.exports = router;

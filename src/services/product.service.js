@@ -29,9 +29,6 @@ const updateProductById = async (productId, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'product not found');
   }
   Object.assign(product, updateBody);
-  console.log(0, product);
-  console.log(1, updateBody);
-  console.log(2, Object.assign(product, updateBody));
   await product.save();
   return product;
 };

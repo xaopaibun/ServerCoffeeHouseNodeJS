@@ -53,7 +53,7 @@ const orderSchema = mongoose.Schema(
     },
     shipping_information: {
       type: Number,
-      enum: [1, 2, 3], // enum: ['not delivered', 'delivery', 'delivered'],
+      enum: [1, 2, 3, 4], // enum: ['not delivered', 'delivery', 'delivered'],
       default: 1,
     },
     list_product: {

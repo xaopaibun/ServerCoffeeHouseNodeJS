@@ -15,6 +15,16 @@ const getOrderProduct = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const updateOrder = catchAsync(async (req, res) => {
+  const data = await orderService.updateOrderById(req.params.orderId, req.body);
+  res.send({ message: 'update successfull order', data });
+});
+
+const getOrderDetail = catchAsync(async (req, res) => {
+  const data = await orderService.getOrderDetailById(req.params.orderId);
+  res.send({ message: 'get order detail successfull', data });
+});
+
 const getStatistic = catchAsync(async (req, res) => {
   const result = {
     confirm: 10,
@@ -25,8 +35,16 @@ const getStatistic = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const deleteOrderByID = catchAsync(async (req, res) => {
+  const data = await orderService.deleteOrderById(req.params.orderId);
+  res.status(httpStatus.NO_CONTENT).send({ message: 'delete successful order', data });
+});
+
 module.exports = {
   createOrderProduct,
   getOrderProduct,
   getStatistic,
+  updateOrder,
+  getOrderDetail,
+  deleteOrderByID,
 };

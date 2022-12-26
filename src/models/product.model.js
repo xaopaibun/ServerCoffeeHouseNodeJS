@@ -31,33 +31,26 @@ const productSchema = mongoose.Schema(
       trim: true,
       min: 0,
     },
-    star: {
-      min: 0,
-      max: 5,
-      type: Number,
-      required: true,
-      trim: true,
-    },
-    stock: {
-      type: Number,
-      required: true,
-      min: 0,
-      max: 45,
-      trim: true,
-    },
-    information: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     content: {
       type: String,
       required: true,
       trim: true,
     },
-    shipping: {
-      type: Boolean,
-      default: true,
+    width: {
+      type: Number,
+      required: true,
+    },
+    length: {
+      type: Number,
+      required: true,
+    },
+    height: {
+      type: Number,
+      required: true,
+    },
+    variant: {
+      type: Object,
+      trim: true,
     },
   },
   {

@@ -7,6 +7,7 @@ const bookingtableRoute = require('./bookingtable.route');
 const customerfeedbackRoute = require('./customerfeedback.route');
 const orderRoute = require('./order.route');
 const paymentRoute = require('./payment.route');
+const vnpayRoute = require('./vnpay.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -45,6 +46,10 @@ const defaultRoutes = [
   {
     path: '/order',
     route: orderRoute,
+  },
+  {
+    path: '/pay',
+    route: vnpayRoute,
   },
 ];
 

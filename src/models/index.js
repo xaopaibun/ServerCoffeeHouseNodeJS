@@ -5,3 +5,4 @@ module.exports.Category = require('./category.model');
 module.exports.BookingTable = require('./bookingtable.model');
 module.exports.CustomerFeedback = require('./customerfeedback.model');
 module.exports.Order = require('./order.model');
+module.exports.Ping = require('./ping.model');

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const express = require('express');
 
 const router = express.Router();
@@ -5,13 +6,12 @@ const querystring = require('qs');
 const dateFormat = require('dateformat');
 const crypto = require('crypto');
 const dayjs = require('dayjs');
-// eslint-disable-next-line import/no-unresolved, import/extensions
 
 const config = {
   vnp_TmnCode: '10NDP1EB',
   vnp_HashSecret: 'KJPEJITFXFFURESRUYIDXJEQJECCZHKR',
   vnp_Url: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html',
-  vnp_ReturnUrl: 'http://localhost:8888/order/vnpay_return',
+  vnp_ReturnUrl: 'http://localhost:8000/v1/pay/vnpay_return',
 };
 function sortObject(obj) {
   const sorted = {};
@@ -25,6 +25,7 @@ function sortObject(obj) {
     }
   }
   str.sort();
+  // eslint-disable-next-line no-plusplus
   for (key = 0; key < str.length; key++) {
     sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, '+');
   }
@@ -51,8 +52,8 @@ router.post('/create_payment_url', function (req, res) {
   const returnUrl = config.vnp_ReturnUrl;
 
   const date = dayjs();
-  const createDate = dateFormat(date, 'yyyymmddHHmmss');
-  const orderId = dateFormat(date, 'HHmmss');
+  const createDate = dateFormat(date, 'yyyymmddHHMMss');
+  const orderId = dateFormat(date, 'HHMMss');
   const { amount, bankCode, orderType, language, orderDescription } = req.body;
   const orderInfo = orderDescription;
   let locale = language;
@@ -60,7 +61,6 @@ router.post('/create_payment_url', function (req, res) {
     locale = 'vn';
   }
   const currCode = 'VND';
-  // eslint-disable-next-line camelcase
   let vnp_Params = {};
   vnp_Params.vnp_Version = '2.1.0';
   vnp_Params.vnp_Command = 'pay';
@@ -94,59 +94,29 @@ router.post('/create_payment_url', function (req, res) {
   res.send({ vnpUrl });
 });
 
-// router.get('/vnpay_return', function (req, res) {
-//   let vnp_Params = req.query;
+router.get('/vnpay_return', function (req, res) {
+  // eslint-disable-next-line camelcase
+  let vnp_Params = req.query;
 
-//   let secureHash = vnp_Params.vnp_SecureHash;
+  const secureHash = vnp_Params.vnp_SecureHash;
 
-//   delete vnp_Params.vnp_SecureHash;
-//   delete vnp_Params.vnp_SecureHashType;
+  delete vnp_Params.vnp_SecureHash;
+  delete vnp_Params.vnp_SecureHashType;
+  vnp_Params = sortObject(vnp_Params);
 
-//   vnp_Params = sortObject(vnp_Params);
+  const secretKey = config.vnp_HashSecret;
 
-//   let config = require('config');
-//   let tmnCode = config.get('vnp_TmnCode');
-//   let secretKey = config.get('vnp_HashSecret');
+  const signData = querystring.stringify(vnp_Params, { encode: false });
+  const hmac = crypto.createHmac('sha512', secretKey);
 
-//   let querystring = require('qs');
-//   let signData = querystring.stringify(vnp_Params, { encode: false });
-//   let crypto = require('crypto');
-//   let hmac = crypto.createHmac('sha512', secretKey);
-//   let signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+  // eslint-disable-next-line no-buffer-constructor, security/detect-new-buffer
+  const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
 
-//   if (secureHash === signed) {
-//     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-
-//     res.render('success', { code: vnp_Params.vnp_ResponseCode });
-//   } else {
-//     res.render('success', { code: '97' });
-//   }
-// });
-
-// router.get('/vnpay_ipn', function (req, res, next) {
-//   let vnp_Params = req.query;
-//   let secureHash = vnp_Params.vnp_SecureHash;
-
-//   delete vnp_Params.vnp_SecureHash;
-//   delete vnp_Params.vnp_SecureHashType;
-
-//   vnp_Params = sortObject(vnp_Params);
-//   let config = require('config');
-//   let secretKey = config.get('vnp_HashSecret');
-//   let querystring = require('qs');
-//   let signData = querystring.stringify(vnp_Params, { encode: false });
-//   let crypto = require('crypto');
-//   let hmac = crypto.createHmac('sha512', secretKey);
-//   let signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
-
-//   if (secureHash === signed) {
-//     let orderId = vnp_Params.vnp_TxnRef;
-//     let rspCode = vnp_Params.vnp_ResponseCode;
-//     //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-//     res.status(200).json({ RspCode: '00', Message: 'success' });
-//   } else {
-//     res.status(200).json({ RspCode: '97', Message: 'Fail checksum' });
-//   }
-// });
+  if (secureHash === signed) {
+    res.send({ code: vnp_Params.vnp_ResponseCode });
+  } else {
+    res.send({ code: '97' });
+  }
+});
 
 module.exports = router;

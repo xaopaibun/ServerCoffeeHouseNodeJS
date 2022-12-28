@@ -8,58 +8,58 @@ const ApiError = require('../utils/ApiError');
 const { roleRights } = require('../config/roles');
 const { facebookClientId, facebookClientSecret, googleClientId, googleClientSecret } = require('../config/config');
 
-passport.use(
-  new FacebookTokenStrategy(
-    {
-      clientID: facebookClientId,
-      clientSecret: facebookClientSecret,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await userService.getUserByIdFaceBook(profile.id);
-        if (user) return done(null, user);
-        const newUser = await userService.createUser({
-          facebook: {
-            uid: profile.id,
-            token: accessToken,
-            email: profile.emails[0].value,
-          },
-          name: profile.displayName,
-        });
-        return done(null, newUser);
-      } catch (error) {
-        return done(error, false);
-      }
-    }
-  )
-);
+// passport.use(
+//   new FacebookTokenStrategy(
+//     {
+//       clientID: facebookClientId,
+//       clientSecret: facebookClientSecret,
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         const user = await userService.getUserByIdFaceBook(profile.id);
+//         if (user) return done(null, user);
+//         const newUser = await userService.createUser({
+//           facebook: {
+//             uid: profile.id,
+//             token: accessToken,
+//             email: profile.emails[0].value,
+//           },
+//           name: profile.displayName,
+//         });
+//         return done(null, newUser);
+//       } catch (error) {
+//         return done(error, false);
+//       }
+//     }
+//   )
+// );
 
-passport.use(
-  new GooglePlusTokenStrategy(
-    {
-      clientID: googleClientId,
-      clientSecret: googleClientSecret,
-      passReqToCallback: true,
-    },
-    async (req, accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await userService.getUserByIdGoogle(profile.id);
-        if (user) return done(null, user);
-        const newUser = await userService.createUser({
-          google: {
-            uid: profile.id,
-            token: accessToken,
-            email: profile.emails[0].value,
-          },
-          fullname: profile.displayName,
-        });
-        return done(null, newUser);
-      } catch (error) {
-        return done(error, false);
-      }
-    }
-  )
-);
+// passport.use(
+//   new GooglePlusTokenStrategy(
+//     {
+//       clientID: googleClientId,
+//       clientSecret: googleClientSecret,
+//       passReqToCallback: true,
+//     },
+//     async (req, accessToken, refreshToken, profile, done) => {
+//       try {
+//         const user = await userService.getUserByIdGoogle(profile.id);
+//         if (user) return done(null, user);
+//         const newUser = await userService.createUser({
+//           google: {
+//             uid: profile.id,
+//             token: accessToken,
+//             email: profile.emails[0].value,
+//           },
+//           fullname: profile.displayName,
+//         });
+//         return done(null, newUser);
+//       } catch (error) {
+//         return done(error, false);
+//       }
+//     }
+//   )
+// );
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
   if (err || info || !user) {

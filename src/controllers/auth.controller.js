@@ -12,6 +12,9 @@ const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
+  if (user.role === 'admin') {
+    res.send({ tokens });
+  }
   res.send({ user, tokens });
 });
 

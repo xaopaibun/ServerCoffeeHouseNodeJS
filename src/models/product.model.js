@@ -3,6 +3,25 @@ const slug = require('mongoose-slug-generator');
 
 const { toJSON, paginate } = require('./plugins');
 
+const optionSchema = mongoose.Schema({
+  value: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  inventory: {
+    type: Boolean,
+  },
+});
+
+const variantSchema = mongoose.Schema({
+  name: {
+    type: String,
+  },
+  option: [optionSchema],
+});
+
 const productSchema = mongoose.Schema(
   {
     category_id: {
@@ -13,23 +32,16 @@ const productSchema = mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true,
     },
     image: {
       type: Array,
-      trim: true,
+      required: true,
     },
     slug: {
       type: String,
       slug: ['name'],
       trim: true,
       unique: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-      trim: true,
-      min: 0,
     },
     content: {
       type: String,
@@ -48,10 +60,11 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    variant: {
-      type: Object,
-      trim: true,
+    weight: {
+      type: Number,
+      required: true,
     },
+    variant: [variantSchema],
   },
   {
     timestamps: true,

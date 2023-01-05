@@ -11,7 +11,7 @@ const config = {
   vnp_TmnCode: '10NDP1EB',
   vnp_HashSecret: 'KJPEJITFXFFURESRUYIDXJEQJECCZHKR',
   vnp_Url: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html',
-  vnp_ReturnUrl: 'http://localhost:8888/order/vnpay_return',
+  vnp_ReturnUrl: 'http://localhost:8000/v1/pay/vnpay_return',
 };
 function sortObject(obj) {
   const sorted = {};
@@ -94,34 +94,34 @@ router.post('/create_payment_url', function (req, res) {
   res.send({ vnpUrl });
 });
 
-// router.get('/vnpay_return', function (req, res) {
-//   let vnp_Params = req.query;
+router.get('/vnpay_return', function (req, res) {
+  // eslint-disable-next-line camelcase
+  let vnp_Params = req.query;
 
-//   let secureHash = vnp_Params.vnp_SecureHash;
+  const secureHash = vnp_Params.vnp_SecureHash;
 
-//   delete vnp_Params.vnp_SecureHash;
-//   delete vnp_Params.vnp_SecureHashType;
+  delete vnp_Params.vnp_SecureHash;
+  delete vnp_Params.vnp_SecureHashType;
 
-//   vnp_Params = sortObject(vnp_Params);
+  // eslint-disable-next-line camelcase
+  vnp_Params = sortObject(vnp_Params);
 
-//   let config = require('config');
-//   let tmnCode = config.get('vnp_TmnCode');
-//   let secretKey = config.get('vnp_HashSecret');
+  const secretKey = config.vnp_HashSecret;
 
-//   let querystring = require('qs');
-//   let signData = querystring.stringify(vnp_Params, { encode: false });
-//   let crypto = require('crypto');
-//   let hmac = crypto.createHmac('sha512', secretKey);
-//   let signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+  const signData = querystring.stringify(vnp_Params, { encode: false });
+  // eslint-disable-next-line global-require, no-shadow
+  const hmac = crypto.createHmac('sha512', secretKey);
+  // eslint-disable-next-line security/detect-new-buffer, no-buffer-constructor
+  const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
 
-//   if (secureHash === signed) {
-//     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+  if (secureHash === signed) {
+    // Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
 
-//     res.render('success', { code: vnp_Params.vnp_ResponseCode });
-//   } else {
-//     res.render('success', { code: '97' });
-//   }
-// });
+    res.send({ code: vnp_Params.vnp_ResponseCode });
+  } else {
+    res.send({ code: '97' });
+  }
+});
 
 // router.get('/vnpay_ipn', function (req, res, next) {
 //   let vnp_Params = req.query;

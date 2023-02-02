@@ -9,6 +9,7 @@ const auth = require('../../middlewares/auth');
 router.get('/list-order', auth('getUsers'), orderController.getOrderProduct);
 router.post('/create', orderController.createOrderProduct);
 router.get('/statistic', auth('getUsers'), orderController.getStatistic);
+router.get('/statistic-by-year/:year', auth('getUsers'), orderController.getStatisticbyYear);
 router.put('/:orderId', auth('getUsers'), orderController.updateOrder);
 router.get('/:orderId', auth('getUsers'), orderController.getOrderDetail);
 router.delete('/:orderId', auth('getUsers'), orderController.deleteOrderByID);

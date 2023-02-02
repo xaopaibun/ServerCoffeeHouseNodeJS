@@ -7,6 +7,7 @@ const { orderController } = require('../../controllers');
 const auth = require('../../middlewares/auth');
 
 router.get('/list-order', auth('getUsers'), orderController.getOrderProduct);
+router.get('/list-order/:userId', orderController.getOrderProductbyIdUser);
 router.post('/create', orderController.createOrderProduct);
 router.get('/statistic', auth('getUsers'), orderController.getStatistic);
 router.get('/statistic-by-year/:year', auth('getUsers'), orderController.getStatisticbyYear);

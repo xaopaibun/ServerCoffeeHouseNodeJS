@@ -66,6 +66,26 @@ io.on('connection', function (socket) {
   })();
 
   io.emit('ping', count);
+  socket.on('notification-test-mobile', (data) => {
+    io.emit('notification-test-mobile', data);
+  });
+  socket.on('messages-test', (data) => {
+    io.emit('messages-test', data);
+  });
+  setTimeout(() => {
+    io.emit('messages-test', [
+      {
+        _id: Math.random(),
+        text: 'abc',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'admin',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+    ]);
+  }, 5000);
   socket.on('disconnect', function () {
     if (count > 0) {
       count -= 1;

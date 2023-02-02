@@ -14,6 +14,11 @@ const queryProduct = async (filter, options) => {
   return product;
 };
 
+const getProductByName = async (name) => {
+  const data = await Product.find({ name: { $regex: name } });
+  return data;
+};
+
 const getProductByCategoryId = async (CategoryId) => {
   const data = await Product.aggregate([{ $match: { category_id: mongoose.Types.ObjectId(CategoryId) } }]);
   return data;
@@ -49,4 +54,5 @@ module.exports = {
   updateProductById,
   deleteProductById,
   getProductByCategoryId,
+  getProductByName,
 };

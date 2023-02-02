@@ -18,7 +18,7 @@ function sortObject(obj) {
   const str = [];
   let key;
   // eslint-disable-next-line no-restricted-syntax
-  for (key in obj) {
+  for (let key in obj) {
     // eslint-disable-next-line no-prototype-builtins
     if (obj.hasOwnProperty(key)) {
       str.push(encodeURIComponent(key));
@@ -51,10 +51,13 @@ router.post('/create_payment_url', function (req, res) {
   const returnUrl = config.vnp_ReturnUrl;
 
   const date = dayjs();
-  const createDate = dateFormat(date, 'yyyymmddHHmmss');
+  console.log(222, date);
+  const createDate = dateFormat(date, 'yyyymmddHHMMss');
+  console.log('111', createDate);
   const orderId = dateFormat(date, 'HHmmss');
   const { amount, bankCode, orderType, language, orderDescription } = req.body;
   const orderInfo = orderDescription;
+
   let locale = language;
   if (locale === null || locale === '') {
     locale = 'vn';

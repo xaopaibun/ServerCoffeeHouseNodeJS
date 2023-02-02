@@ -16,6 +16,14 @@ const getProducts = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getProductsbySearchName = catchAsync(async (req, res) => {
+  const product = await productService.getProductByName(req.params.name);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  res.send(product);
+});
+
 const getProduct = catchAsync(async (req, res) => {
   const product = await productService.getProductById(req.params.productId);
   if (!product) {
@@ -57,4 +65,5 @@ module.exports = {
   deleteProduct,
   getSimilarProducts,
   getProductByCategoryID,
+  getProductsbySearchName,
 };

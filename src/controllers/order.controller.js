@@ -16,6 +16,11 @@ const getOrderProduct = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getOrderProductbyIdUser = catchAsync(async (req, res) => {
+  const result = await orderService.getListOrderByUserID(req.params.userId);
+  res.send(result);
+});
+
 const updateOrder = catchAsync(async (req, res) => {
   const data = await orderService.updateOrderById(req.params.orderId, req.body);
   res.send({ message: 'update successfull order', data });
@@ -71,4 +76,5 @@ module.exports = {
   getOrderDetail,
   deleteOrderByID,
   getStatisticbyYear,
+  getOrderProductbyIdUser,
 };

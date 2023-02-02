@@ -1,7 +1,5 @@
-// const { createServer } = require('http');
 const mongoose = require('mongoose');
-// const PushNotifications = require('@pusher/push-notifications-server');
-// const Pusher = require('pusher');
+const notifier = require('node-notifier');
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
@@ -14,15 +12,22 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
 const server = app.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
 });
+const notification = new notifier.Notification({
+  title: 'Thông báo',
+  message: 'Đây là một thông báo đến từ hệ thống',
+  sound: true,
+  wait: true,
+});
+
+notifier.notify(notification);
+
 const exitHandler = () => {
   if (server) {
     server.close(() => {
       logger.info('Server closed');
       process.exit(1);
     });
-  } else {
-    process.exit(1);
-  }
+  } else process.exit(1);
 };
 
 const unexpectedErrorHandler = (error) => {
@@ -61,6 +66,26 @@ io.on('connection', function (socket) {
   })();
 
   io.emit('ping', count);
+  socket.on('notification-test-mobile', (data) => {
+    io.emit('notification-test-mobile', data);
+  });
+  socket.on('messages-test', (data) => {
+    io.emit('messages-test', data);
+  });
+  setTimeout(() => {
+    io.emit('messages-test', [
+      {
+        _id: Math.random(),
+        text: 'abc',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'admin',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+    ]);
+  }, 5000);
   socket.on('disconnect', function () {
     if (count > 0) {
       count -= 1;

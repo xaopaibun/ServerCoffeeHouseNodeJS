@@ -86,10 +86,6 @@ const getStatisticbyYear = catchAsync(async (req, res) => {
       $match: {
         status: 4,
         payment: 2,
-        date: {
-          $gte: new Date(`${year}-01-01`),
-          $lt: new Date(`${year}-12-31`),
-        },
       },
     },
     {

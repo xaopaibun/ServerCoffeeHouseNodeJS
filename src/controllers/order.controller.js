@@ -34,8 +34,8 @@ const getOrderDetail = catchAsync(async (req, res) => {
 const getStatistic = catchAsync(async (req, res) => {
   const pending = await Order.aggregate([{ $match: { status: 1 } }]);
   const delivery = await Order.aggregate([{ $match: { status: 2 } }]);
-  const success = await Order.aggregate([{ $match: { status: 3 } }]);
-  const cancel = await Order.aggregate([{ $match: { status: 4 } }]);
+  const success = await Order.aggregate([{ $match: { status: 4 } }]);
+  const cancel = await Order.aggregate([{ $match: { status: 3 } }]);
 
   const result = {
     confirm: pending.length,
@@ -53,20 +53,79 @@ const deleteOrderByID = catchAsync(async (req, res) => {
 
 const getStatisticbyYear = catchAsync(async (req, res) => {
   const { year } = req.params;
-  const result = [];
-  // eslint-disable-next-line no-plusplus
-  for (let i = 1; i <= 12; i++) {
-    // eslint-disable-next-line no-await-in-loop
-    const data = await Order.find({ date: { $gte: new Date('2023'), $lt: new Date(year, i + 1, '01') } });
-    console.log(data);
-    result.push({
-      id: i,
-      month: `Tháng ${i}`,
-      total: 300000,
-    });
-  }
 
-  res.send(result);
+  // eslint-disable-next-line camelcase
+  const statistic_month = await Order.aggregate([
+    {
+      $match: {
+        status: 4,
+        payment: 2,
+        date: {
+          $gte: new Date(`${year}-01-01`),
+          $lt: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$date' },
+          month: { $month: '$date' },
+        },
+        total_revenue: { $sum: '$total_money' },
+      },
+    },
+    {
+      $sort: { '_id.year': 1, '_id.month': 1 },
+    },
+  ]);
+
+  // eslint-disable-next-line camelcase
+  const statistic_year = await Order.aggregate([
+    {
+      $match: {
+        status: 4,
+        payment: 2,
+        date: {
+          $gte: new Date(`${year}-01-01`),
+          $lt: new Date(`${year}-12-31`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$date' },
+        },
+        total_revenue: { $sum: '$total_money' },
+      },
+    },
+    {
+      $sort: { '_id.year': 1, '_id.month': 1 },
+    },
+  ]);
+  // eslint-disable-next-line camelcase
+  const statistic_product = await Order.aggregate([
+    {
+      $match: { status: 4, payment: 2 },
+    },
+    {
+      $unwind: '$list_product',
+    },
+    {
+      $group: {
+        _id: '$list_product.name',
+        totalQuantity: { $sum: '$list_product.quantity' },
+      },
+    },
+    {
+      $sort: { totalQuantity: -1 },
+    },
+    {
+      $limit: 5,
+    },
+  ]);
+  res.send({ statistic_month, statistic_year, statistic_product });
 });
 module.exports = {
   createOrderProduct,

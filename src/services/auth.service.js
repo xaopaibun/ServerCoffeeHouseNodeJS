@@ -80,6 +80,16 @@ const verifyEmail = async (verifyEmailToken) => {
   }
 };
 
+const updateUserByEmail = async (email, updateBody) => {
+  const user = await userService.getUserByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
+  }
+  Object.assign(user, updateBody);
+  await user.save();
+  return user;
+};
+
 module.exports = {
   authenFacebook,
   authenGoogle,
@@ -88,4 +98,5 @@ module.exports = {
   refreshAuth,
   resetPassword,
   verifyEmail,
+  updateUserByEmail,
 };

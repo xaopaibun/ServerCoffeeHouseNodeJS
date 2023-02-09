@@ -60,6 +60,11 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const updateUser = catchAsync(async (req, res) => {
+  const data = await authService.updateUserByEmail(req.params.email, req.body);
+  res.send({ message: 'update successful user', data });
+});
+
 module.exports = {
   register,
   login,
@@ -71,4 +76,5 @@ module.exports = {
   verifyEmail,
   loginFaceBook,
   loginGoogle,
+  updateUser,
 };

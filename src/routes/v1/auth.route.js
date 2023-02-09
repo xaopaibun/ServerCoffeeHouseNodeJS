@@ -17,6 +17,7 @@ router.post('/send-verification-email', auth(), authController.sendVerificationE
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 router.post('/login-facebook', passport.authenticate('facebook-token', { session: false }), authController.loginFaceBook);
 router.post('/login-google', passport.authenticate('google-plus-token', { session: false }), authController.loginGoogle);
+router.put('/update-user/:email', authController.updateUser);
 
 module.exports = router;
 

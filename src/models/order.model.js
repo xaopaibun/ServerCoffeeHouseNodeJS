@@ -29,6 +29,9 @@ const orderSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    order_code: {
+      type: String,
+    },
     total_money: {
       type: Number,
     },
